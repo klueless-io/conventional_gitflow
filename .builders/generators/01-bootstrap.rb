@@ -73,10 +73,14 @@ KManager.action :bootstrap do
         # add('LICENSE.txt')
         # add('Rakefile')
         # oadd('README.md')
-        run_command('rubocop -A')
+        # run_command('rubocop -A')
       end
       .blueprint do
-        # row '.github/workflows/main.yml'
+        self.dom = parent.options.to_h
+          .merge(options.to_h)
+          .merge(repo_info: parent.options[:repo_info])
+
+        oadd('.github/workflows/main.yml')
       end
 
     # director.k_builder.debug

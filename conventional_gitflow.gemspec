@@ -3,7 +3,7 @@
 require_relative 'lib/conventional_gitflow/version'
 
 Gem::Specification.new do |spec|
-  spec.required_ruby_version  = '>= 2.5'
+  spec.required_ruby_version  = '>= 2.7'
   spec.name                   = 'conventional_gitflow'
   spec.version                = ConventionalGitflow::VERSION
   spec.authors                = ['David Cruwys']
