@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+puts 'xxxxxxxxxxxxxxx1'
+puts ARGV[0]
+message = File.read(ARGV[0])
+
+puts message
+
+
+File.write(ARGV[0], "totally different message: #{message}")
+
