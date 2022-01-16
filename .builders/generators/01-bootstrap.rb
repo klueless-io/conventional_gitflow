@@ -4,7 +4,7 @@ KManager.action :bootstrap do
     director = Dsl::RubyGemDsl
       .init(k_builder,
         template_base_folder:       'ruby/gem',
-        on_exist:                   :compare,                   # %i[skip write compare]
+        on_exist:                   :skip,                   # %i[skip write compare]
         on_action:                  :queue,                     # %i[queue execute]
         repo_name:                  application_name,
         application:                application_name,
@@ -52,7 +52,7 @@ KManager.action :bootstrap do
         # run_command('git init')
         # run_template_script('bin/runonce/git-setup.sh', dom: dom)
       end
-      .blueprint(name: :gem_boilerplate, on_exist: :write) do
+      .blueprint(name: :gem_boilerplate) do
 
         self.dom = parent.options.to_h
           .merge(options.to_h)
@@ -75,7 +75,7 @@ KManager.action :bootstrap do
         # oadd('README.md')
         # run_command('rubocop -A')
       end
-      .blueprint do
+      .blueprint(name: :git_workflow, on_exist: :write) do
         self.dom = parent.options.to_h
           .merge(options.to_h)
           .merge(repo_info: parent.options[:repo_info])
