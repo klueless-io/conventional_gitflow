@@ -61,16 +61,11 @@ module Dsl
     # @param [Hash] **opts The options
     # @option opts [String] :template_filename Template filename can be set or it will default to the same value as the output file name
     # @option opts [String] :template_subfolder Template subfolder
-    def add(output_filename, **opts)
-      template_filename = opts[:template_filename] || output_filename
-      template_parts = [template_base_folder, template_filename]
-      template_file = File.join(*template_parts)
+    def add(output_file, **opts)
+      template_file = opts[:template_file] || output_file
+      template_parts = [template_base_folder, template_file]
 
-      output_file = output_filename #  File.join('layouts', output_filename)
-
-      opts = {
-        template_file: template_file
-      }.merge(opts)
+      opts[:template_file] = File.join(*template_parts)
 
       add_file(output_file, **opts)
     end

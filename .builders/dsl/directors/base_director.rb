@@ -20,6 +20,7 @@ module Dsl
       attr_reader :builder
       attr_reader :k_builder
       attr_reader :options
+      attr_accessor :dom
     
       def initialize(k_builder, builder, **opts)
         @k_builder  = k_builder
@@ -52,6 +53,8 @@ module Dsl
         opts = {
           on_exist: on_exist
         }.merge(opts)
+
+        opts[:dom] = dom if dom
 
         handle_action(k_builder.add_file_action(file, **opts))
 
