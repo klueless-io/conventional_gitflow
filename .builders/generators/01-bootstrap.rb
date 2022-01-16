@@ -12,6 +12,7 @@ KManager.action :bootstrap do
       .github do
         parent.options.repo_info = repo_info
         delete_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
+        sleep 2; open_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
         create_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
         sleep 2; open_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
         # list_repositories
