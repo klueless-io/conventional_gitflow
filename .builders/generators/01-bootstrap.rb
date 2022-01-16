@@ -13,7 +13,7 @@ KManager.action :bootstrap do
         parent.options.repo_info = repo_info
         # delete_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
         # sleep 2; open_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
-        create_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
+        # create_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
         # sleep 2; open_repository # (name: :xmen, organization: 'klueless-webpack5-samples')
         # list_repositories
       end
@@ -34,7 +34,7 @@ KManager.action :bootstrap do
           log.line
           log.structure(dom)
 
-        # tadd('.gitignore')
+        # add('.gitignore')
 
         # add('hooks/pre-commit')
         # add('hooks/update-version')
@@ -42,8 +42,8 @@ KManager.action :bootstrap do
         # add('bin/setup', dom: dom)
         # add('bin/console', dom: dom)
     
-        run_command('git init')
-        run_template_script('bin/runonce/git-setup.sh', dom: dom)
+        # run_command('git init')
+        # run_template_script('bin/runonce/git-setup.sh', dom: dom)
       end
 
     # director.k_builder.debug
