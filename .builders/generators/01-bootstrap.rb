@@ -52,7 +52,7 @@ KManager.action :bootstrap do
         # run_command('git init')
         # run_template_script('bin/runonce/git-setup.sh', dom: dom)
       end
-      .blueprint(name: :gem_common, on_exist: :write) do
+      .blueprint(name: :gem_boilerplate, on_exist: :write) do
 
         self.dom = parent.options.to_h
           .merge(options.to_h)
@@ -73,6 +73,7 @@ KManager.action :bootstrap do
         # add('LICENSE.txt')
         # add('Rakefile')
         # oadd('README.md')
+        run_command('rubocop -A')
       end
       .blueprint do
         # row '.github/workflows/main.yml'

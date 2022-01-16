@@ -7,7 +7,7 @@
 exit 1 if ARGV.empty?
 
 version = ARGV[0]
-version = version[1..-1] # revoke 'v' character, e.g. v0.1.1 becomes 0.1.1
+version = version[1..] # revoke 'v' character, e.g. v0.1.1 becomes 0.1.1
 
 namespaces = %w[]
 
@@ -30,4 +30,4 @@ end
 output.push('')
 
 printf "%-25<label>s : %<version>s\n", label: 'GEM VERSION', version: version
-File.open('lib//version.rb', 'w+') { |f| f.write(output.join("\n")) }
+File.write('lib//version.rb', output.join("\n"))
