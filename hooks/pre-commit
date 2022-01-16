@@ -8,8 +8,9 @@ require 'English'
 
 exit 0 if ARGV.include?('--no-verify')
 
-puts 'david was here'
+puts 'david was hereXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
 exit 1
+exit 0
 
 warning_keywords = %w[console.log]
 keywords = %w[binding.pry console.dir byebug debugger]
