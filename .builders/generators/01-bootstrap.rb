@@ -75,12 +75,12 @@ KManager.action :bootstrap do
         # oadd('README.md')
         # run_command('rubocop -A')
       end
-      .blueprint(name: :git_workflow, on_exist: :write) do
+      .blueprint(name: :git_workflow) do
         self.dom = parent.options.to_h
           .merge(options.to_h)
           .merge(repo_info: parent.options[:repo_info])
 
-        oadd('.github/workflows/main.yml')
+        # oadd('.github/workflows/main.yml')
       end
 
     # director.k_builder.debug
