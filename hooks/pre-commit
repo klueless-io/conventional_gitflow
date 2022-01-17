@@ -8,7 +8,7 @@ require 'English'
 
 exit 0 if ARGV.include?('--no-verify')
 
-# No arguments are passed to the pre-commit script, and exiting 
+# No arguments are passed to the pre-commit script, and exiting
 # with a non-zero status aborts the entire commit
 
 warning_keywords = %w[console.log]

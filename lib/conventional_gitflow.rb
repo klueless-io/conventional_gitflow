@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
+require 'k_util'
+
 require 'conventional_gitflow/version'
+require 'conventional_gitflow/git_state'
 
 module ConventionalGitflow
   # raise ConventionalGitflow::Error, 'Sample message'
-  class Error < StandardError; end
+  Error = Class.new(StandardError)
 
   # Your code goes here...
 end
