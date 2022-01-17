@@ -3,7 +3,7 @@
 require 'k_util'
 
 require 'conventional_gitflow/version'
-require 'conventional_gitflow/git_state'
+require 'conventional_gitflow/current_commit'
 
 module ConventionalGitflow
   # raise ConventionalGitflow::Error, 'Sample message'
