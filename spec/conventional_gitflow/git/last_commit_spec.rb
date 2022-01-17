@@ -2,7 +2,7 @@
 
 require 'json'
 
-RSpec.describe ConventionalGitflow::CurrentCommit do
+RSpec.describe ConventionalGitflow::Git::LastCommit do
   let(:instance) { described_class.new }
 
   describe '#initialize' do

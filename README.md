@@ -1,3 +1,13 @@
+# FlowingGit
+# GitFlowed
+# GitFlowing
+# ContinuousGit
+# GitCi
+
+  ## Conventional commits
+  ## Automated SemVer
+  ## Automatic ChangeLog
+
 # Conventional Gitflow
 
 > Conventional Gitflow provides tools for conventional git workflows including changelogs and SemVer

@@ -3,11 +3,15 @@
 require 'k_util'
 
 require 'conventional_gitflow/version'
-require 'conventional_gitflow/current_commit'
+require 'conventional_gitflow/git/last_commit'
+require 'conventional_gitflow/git/commit_log'
+require 'conventional_gitflow/map/commit_log_mapper'
+require 'conventional_gitflow/entities/commit'
 
 module ConventionalGitflow
   # raise ConventionalGitflow::Error, 'Sample message'
-  Error = Class.new(StandardError)
+  # Error = Class.new(StandardError)
+  MappingError = Class.new(StandardError)
 
   # Your code goes here...
 end

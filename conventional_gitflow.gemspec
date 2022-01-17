@@ -38,9 +38,12 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
   # spec.extensions    = ['ext/conventional_gitflow/extconf.rb']
 
-  spec.add_dependency 'k_log' , '~> 0.0.0'
   # spec.add_dependency 'k_type'                , '~> 0.0.0'
-  # spec.add_dependency 'k_util'                , '~> 0.0.0'
+  spec.add_dependency 'k_log', '~> 0.0.0'
+  spec.add_dependency 'k_util', '~> 0.0.0'
+  spec.add_dependency "dry-cli", "~> 0.7.0"
+  spec.add_dependency "dry-struct", "~> 1.4.0"
+
   spec.metadata = {
     'rubygems_mfa_required' => 'true'
   }

@@ -5,8 +5,8 @@ RSpec.describe ConventionalGitflow do
     expect(ConventionalGitflow::VERSION).not_to be nil
   end
 
-  it 'has a standard error' do
-    expect { raise ConventionalGitflow::Error, 'some message' }
+  it 'has a mapping error' do
+    expect { raise ConventionalGitflow::MappingError, 'some message' }
       .to raise_error('some message')
   end
 end
