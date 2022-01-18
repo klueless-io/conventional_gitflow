@@ -3,6 +3,9 @@
 module ConventionalGitflow
   module Map
     class CommitLogMapper
+      # feat: what she said                   type: feat, scope:      ,subject: what she said
+      # feat(xmen): what she said             type: feat, scope: xmen , subject: what she said
+      # feat(ouch)!: what she said            type: feat, scope: ouch , subject: what she said, breaking_change: what she said
       HEADER_PATTERN = /^(?<type>\w*)(?:\((?<scope>.*)\))?!?: (?<subject>.*)$/i
       BREAKING_CHANGE_HEADER_PATTERN = /^(?:\w*)(?:\((?:.*)\))?!: (?<subject>.*)$/i
       BREAKING_CHANGE_BODY_PATTERN = /^[\\s|*]*(?:BREAKING CHANGE)[:\\s]+(?<contents>.*)/
@@ -14,11 +17,11 @@ module ConventionalGitflow
       end
 
       def map(raw_commit_log)
-        raise MappingError("Raw commit not provided as string") unless raw_commit_log.is_a?(String)
+        raise ConventionalGitflow::MappingError, "Raw commit not provided as string"  unless raw_commit_log.is_a?(String)
 
         id, header, *lines = trim_new_lines(raw_commit_log).split(/\r?\n+/)
 
-        raise MappingError("Invalid raw commit format")  if id.nil? || header.nil?
+        raise ConventionalGitflow::MappingError, "Invalid raw commit format"          if id.nil? || header.nil?
 
         ConventionalGitflow::Entities::Commit.new(
           id: id,
@@ -80,6 +83,7 @@ module ConventionalGitflow
 
       def match_breaking_change_body(line)
         match = line.match BREAKING_CHANGE_BODY_PATTERN
+        
         match[:contents] || "" if match
       end
 

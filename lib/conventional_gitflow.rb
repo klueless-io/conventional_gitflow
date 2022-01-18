@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'k_log'
 require 'k_util'
 
 require 'conventional_gitflow/version'
