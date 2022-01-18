@@ -27,6 +27,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
         end
       end
 
+
       context "has a header message" do
         let(:raw_commit_log) { sample_raw_commit(header: "Did the thing") }
       
