@@ -6,8 +6,8 @@ module ConventionalGitflow
       # feat: what she said                   type: feat, scope:      ,subject: what she said
       # feat(xmen): what she said             type: feat, scope: xmen , subject: what she said
       # feat(ouch)!: what she said            type: feat, scope: ouch , subject: what she said, breaking: true, breaking_change: what she said
-      HEADER_PATTERN = /^(?<type>\w*)(?:\((?<scope>.*)\))?!?: (?<subject>.*)$/i
-      BREAKING_CHANGE_HEADER_PATTERN = /^(?:\w*)(?:\((?:.*)\))?!: (?<subject>.*)$/i
+      HEADER_PATTERN = /^(?<type>\w*)(?:\((?<scope>.*)\))?(?<breaking>!?): (?<subject>.*)$/i
+      # BREAKING_CHANGE_HEADER_PATTERN = /^(?:\w*)(?:\((?:.*)\))?!: (?<subject>.*)$/i
       BREAKING_CHANGE_BODY_PATTERN = /^[\\s|*]*(?:BREAKING CHANGE)[:\\s]+(?<contents>.*)/
       REVERT_PATTERN = /^(?:Revert|revert:)\s"?(?<header>[\s\S]+?)"?\s*This reverts commit (?<id>\w*)\./i
       MENTION_PATTERN = /@([\w-]+)/
@@ -31,22 +31,28 @@ module ConventionalGitflow
       private
 
       def build_commit(id, header, lines, raw_commit_log)
-        {
+        commit = {
           id: id,
-          **match_header_parts(header),
+          **split_header(header),
           **extract_contents(header, lines),
           header: header,
           mentions: match_mentions(raw_commit_log),
           revert: match_revert(raw_commit_log)
         }
+
+        commit[:breaking] = true if commit[:breaking_change]
+        commit[:breaking_change] = commit[:subject] if commit[:breaking_change].nil? && commit[:breaking]
+        commit[:subject] = commit[:header] if commit[:subject].nil?
+        commit
       end
 
-      def match_header_parts(header)
+      def split_header(header)
         match = header.match HEADER_PATTERN
         {
           type: match ? match[:type] : nil,
           scope: match ? match[:scope] : nil,
-          subject: match ? match[:subject] : nil
+          subject: match ? match[:subject] : nil,
+          breaking: match ? match[:breaking] == '!' : false,
         }
       end
 
@@ -66,7 +72,7 @@ module ConventionalGitflow
           next process_line(line, acc, state)
         }
 
-        contents[:breaking_change] ||= match_breaking_change_header(header)
+        # contents[:breaking_change] ||= match_breaking_change_header(header)
 
         contents.transform_values { |v| trim_new_lines(v) }
       end
@@ -92,10 +98,10 @@ module ConventionalGitflow
         match[:contents] || "" if match
       end
 
-      def match_breaking_change_header(header)
-        match = header.match BREAKING_CHANGE_HEADER_PATTERN
-        match[:subject] if match
-      end
+      # def match_breaking_change_header(header)
+      #   match = header.match BREAKING_CHANGE_HEADER_PATTERN
+      #   match[:subject] if match
+      # end
 
       def match_mentions(raw_commit)
         raw_commit.scan(MENTION_PATTERN).flatten.uniq

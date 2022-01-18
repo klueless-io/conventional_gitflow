@@ -27,7 +27,6 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
         end
       end
 
-
       context "has a header message" do
         let(:raw_commit_log) { sample_raw_commit(header: "Did the thing") }
       
@@ -38,10 +37,11 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: nil,
             footer: nil,
+            breaking: false,
             breaking_change: nil,
             type: nil,
             scope: nil,
-            subject: nil,
+            subject: "Did the thing",
             mentions: [],
             revert: nil
           )
@@ -58,6 +58,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: nil,
             footer: nil,
+            breaking: false,
             breaking_change: nil,
             type: "feat",
             scope: nil,
@@ -78,6 +79,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: nil,
             footer: nil,
+            breaking: false,
             breaking_change: nil,
             type: "feat",
             scope: "some scope",
@@ -98,6 +100,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: nil,
             footer: nil,
+            breaking: true,
             breaking_change: "Did the thing",
             type: "feat",
             scope: "scope",
@@ -127,6 +130,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: "This is just a normal body",
             footer: "BREAKING CHANGE:\nThis is the breaking change",
+            breaking: true,
             breaking_change: "This is the breaking change",
             type: "feat",
             scope: "scope",
@@ -158,6 +162,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: "This is just a normal body\nwith some extra lines for my boy @frank\nan extra @sinatra",
             footer: nil,
+            breaking: false,
             breaking_change: nil,
             type: "feat",
             scope: "scope",
@@ -185,6 +190,7 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
             id: "a034f2b97fc4b50c48e9874809cc933b0a705989",
             body: "This reverts commit 123423135.",
             footer: nil,
+            breaking: false,
             breaking_change: nil,
             type: "revert",
             scope: nil,
@@ -207,17 +213,17 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
     let(:raw_commit_log_entries) { ConventionalGitflow::Git::CommitLog.new.call }
 
     context 'when entire commit log' do
-      it { 
-        log.structure({ log: subject })
-        # # puts raw_commit_log_entries.first
-        # puts '--------------------------------------------------'
-        # puts JSON.pretty_generate(subject[0].to_h)
-        # puts '--------------------------------------------------'
-        # puts JSON.pretty_generate(subject[1].to_h)
-        # puts '--------------------------------------------------'
-        # puts JSON.pretty_generate(subject[2].to_h)
-        # puts subject.length
-      }
+      # it { 
+      #   log.structure({ log: subject })
+      #   # # puts raw_commit_log_entries.first
+      #   # puts '--------------------------------------------------'
+      #   # puts JSON.pretty_generate(subject[0].to_h)
+      #   # puts '--------------------------------------------------'
+      #   # puts JSON.pretty_generate(subject[1].to_h)
+      #   # puts '--------------------------------------------------'
+      #   # puts JSON.pretty_generate(subject[2].to_h)
+      #   # puts subject.length
+      # }
     end
   end
 end
