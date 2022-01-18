@@ -5,7 +5,7 @@ module ConventionalGitflow
     class CommitLogMapper
       # feat: what she said                   type: feat, scope:      ,subject: what she said
       # feat(xmen): what she said             type: feat, scope: xmen , subject: what she said
-      # feat(ouch)!: what she said            type: feat, scope: ouch , subject: what she said, breaking_change: what she said
+      # feat(ouch)!: what she said            type: feat, scope: ouch , subject: what she said, breaking: true, breaking_change: what she said
       HEADER_PATTERN = /^(?<type>\w*)(?:\((?<scope>.*)\))?!?: (?<subject>.*)$/i
       BREAKING_CHANGE_HEADER_PATTERN = /^(?:\w*)(?:\((?:.*)\))?!: (?<subject>.*)$/i
       BREAKING_CHANGE_BODY_PATTERN = /^[\\s|*]*(?:BREAKING CHANGE)[:\\s]+(?<contents>.*)/
@@ -23,17 +23,32 @@ module ConventionalGitflow
 
         raise ConventionalGitflow::MappingError, "Invalid raw commit format"          if id.nil? || header.nil?
 
-        ConventionalGitflow::Entities::Commit.new(
+        commit_hash = build_commit(id, header, lines, raw_commit_log)
+
+        ConventionalGitflow::Entities::Commit.new(commit_hash)
+      end
+
+      private
+
+      def build_commit(id, header, lines, raw_commit_log)
+        {
           id: id,
           **match_header_parts(header),
           **extract_contents(header, lines),
           header: header,
           mentions: match_mentions(raw_commit_log),
           revert: match_revert(raw_commit_log)
-        )
+        }
       end
 
-      private
+      def match_header_parts(header)
+        match = header.match HEADER_PATTERN
+        {
+          type: match ? match[:type] : nil,
+          scope: match ? match[:scope] : nil,
+          subject: match ? match[:subject] : nil
+        }
+      end
 
       def extract_contents(header, lines)
         contents = {
@@ -72,18 +87,9 @@ module ConventionalGitflow
         [contents, state]
       end
 
-      def match_header_parts(header)
-        header_match = header.match HEADER_PATTERN
-        {
-          type: header_match ? header_match[:type] : nil,
-          scope: header_match ? header_match[:scope] : nil,
-          subject: header_match ? header_match[:subject] : nil
-        }
-      end
-
       def match_breaking_change_body(line)
         match = line.match BREAKING_CHANGE_BODY_PATTERN
-        
+        binding.pry if match != nil && match[:contents] != nil && match[:contents] != ''
         match[:contents] || "" if match
       end
 
