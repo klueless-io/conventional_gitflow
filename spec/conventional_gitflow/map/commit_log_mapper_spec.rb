@@ -213,17 +213,9 @@ RSpec.describe ConventionalGitflow::Map::CommitLogMapper do
     let(:raw_commit_log_entries) { ConventionalGitflow::Git::CommitLog.new.call }
 
     context 'when entire commit log' do
-      # it { 
-      #   log.structure({ log: subject })
-      #   # # puts raw_commit_log_entries.first
-      #   # puts '--------------------------------------------------'
-      #   # puts JSON.pretty_generate(subject[0].to_h)
-      #   # puts '--------------------------------------------------'
-      #   # puts JSON.pretty_generate(subject[1].to_h)
-      #   # puts '--------------------------------------------------'
-      #   # puts JSON.pretty_generate(subject[2].to_h)
-      #   # puts subject.length
-      # }
+      fit { 
+        log.structure({ log: subject })
+      }
     end
   end
 end
