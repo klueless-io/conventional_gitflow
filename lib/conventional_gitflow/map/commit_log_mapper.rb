@@ -89,7 +89,6 @@ module ConventionalGitflow
 
       def match_breaking_change_body(line)
         match = line.match BREAKING_CHANGE_BODY_PATTERN
-        binding.pry if match != nil && match[:contents] != nil && match[:contents] != ''
         match[:contents] || "" if match
       end
 
