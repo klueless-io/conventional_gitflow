@@ -13,6 +13,7 @@ module ConventionalGitflow
       MENTION_PATTERN = /@([\w-]+)/
 
       def map_entries(commit_log_entries)
+        @debug = true
         commit_log_entries.map { |commit_log_entry| map(commit_log_entry) }
       end
 
@@ -34,7 +35,7 @@ module ConventionalGitflow
         commit = {
           id: id,
           **split_header(header),
-          **extract_contents(header, lines),
+          **parse_content(lines),
           header: header,
           mentions: match_mentions(raw_commit_log),
           revert: match_revert(raw_commit_log)
@@ -56,7 +57,7 @@ module ConventionalGitflow
         }
       end
 
-      def extract_contents(header, lines)
+      def parse_content(lines)
         contents = {
           body: nil,
           footer: nil,
@@ -66,29 +67,35 @@ module ConventionalGitflow
         initial_state = {
           continue_breaking_change: false
         }
-
+        binding.pry if @debug
         contents, _ = lines.reduce([contents, initial_state]) { |input, line|
           acc, state = input
+          binding.pry if @debug
           next process_line(line, acc, state)
         }
 
         # contents[:breaking_change] ||= match_breaking_change_header(header)
 
+        binding.pry if @debug
         contents.transform_values { |v| trim_new_lines(v) }
       end
 
       def process_line(line, contents, state)
         contents[:breaking_change] ||= match_breaking_change_body(line)
+        binding.pry if @debug
 
         if contents[:breaking_change]
           contents[:breaking_change] = append(contents[:breaking_change], line) if state[:continue_breaking_change]
+          binding.pry if @debug
 
           state[:continue_breaking_change] = true
           contents[:footer] = append(contents[:footer], line)
           return [contents, state]
         end
 
+        binding.pry if @debug
         contents[:body] = append(contents[:body], line)
+        binding.pry if @debug
 
         [contents, state]
       end

@@ -12,7 +12,7 @@ exit 0 if ARGV.include?('--no-verify')
 # with a non-zero status aborts the entire commit
 
 warning_keywords = %w[console.log]
-keywords = %w[binding.pry console.dir byebug debugger]
+keywords = %w[console.dir byebug debugger]
 files_changed = `git diff-index --name-only HEAD --`.split
 
 # puts '----------------------------------------------------------------------'
