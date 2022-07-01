@@ -16,7 +16,7 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
 
   # REMEMBER TO REMOVE
-  gem 'k_util'                  , path: '../k_util'
+  # gem 'k_util'                  , path: '../k_util'
 end
 
 # spec.add_development_dependency "bundler", "~> 2.0"
