@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+echo 'xxxxxxxxxxxxxxxxxx'
 
 if ! head -1 "$1" | grep -qE "^(feat|fix|ci|chore|docs|test|style|refactor|perf|build|revert)(\(.+?\))?!?: .{1,}$"; then
     echo "Aborting commit. Please follow conventional commit message guidelines" >&2

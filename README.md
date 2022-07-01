@@ -8,6 +8,11 @@
   ## Automated SemVer
   ## Automatic ChangeLog
 
+
+```javascript
+module.exports = ['major', 'premajor', 'minor', 'preminor', 'patch', 'prepatch', 'prerelease'];
+```
+
 # Conventional Gitflow
 
 > Conventional Gitflow provides tools for conventional git workflows including changelogs and SemVer

@@ -6,23 +6,21 @@ module ConventionalGitflow
       # feat: what she said                   type: feat, scope:      ,subject: what she said
       # feat(xmen): what she said             type: feat, scope: xmen , subject: what she said
       # feat(ouch)!: what she said            type: feat, scope: ouch , subject: what she said, breaking: true, breaking_change: what she said
-      HEADER_PATTERN = /^(?<type>\w*)(?:\((?<scope>.*)\))?(?<breaking>!?): (?<subject>.*)$/i
-      # BREAKING_CHANGE_HEADER_PATTERN = /^(?:\w*)(?:\((?:.*)\))?!: (?<subject>.*)$/i
-      BREAKING_CHANGE_BODY_PATTERN = /^[\\s|*]*(?:BREAKING CHANGE)[:\\s]+(?<contents>.*)/
-      REVERT_PATTERN = /^(?:Revert|revert:)\s"?(?<header>[\s\S]+?)"?\s*This reverts commit (?<id>\w*)\./i
-      MENTION_PATTERN = /@([\w-]+)/
+      HEADER_PATTERN = /^(?<type>\w*)(?:\((?<scope>.*)\))?(?<breaking>!?): (?<subject>.*)$/i.freeze
+      BREAKING_CHANGE_BODY_PATTERN = /^[\\s|*]*(?:BREAKING CHANGE)[:\\s]+(?<contents>.*)/.freeze
+      REVERT_PATTERN = /^(?:Revert|revert:)\s"?(?<header>[\s\S]+?)"?\s*This reverts commit (?<id>\w*)\./i.freeze
+      MENTION_PATTERN = /@([\w-]+)/.freeze
 
       def map_entries(commit_log_entries)
-        @debug = true
         commit_log_entries.map { |commit_log_entry| map(commit_log_entry) }
       end
 
       def map(raw_commit_log)
-        raise ConventionalGitflow::MappingError, "Raw commit not provided as string"  unless raw_commit_log.is_a?(String)
+        raise ConventionalGitflow::MappingError, 'Raw commit not provided as string' unless raw_commit_log.is_a?(String)
 
         id, header, *lines = trim_new_lines(raw_commit_log).split(/\r?\n+/)
 
-        raise ConventionalGitflow::MappingError, "Invalid raw commit format"          if id.nil? || header.nil?
+        raise ConventionalGitflow::MappingError, 'Invalid raw commit format' if id.nil? || header.nil?
 
         commit_hash = build_commit(id, header, lines, raw_commit_log)
 
@@ -53,7 +51,7 @@ module ConventionalGitflow
           type: match ? match[:type] : nil,
           scope: match ? match[:scope] : nil,
           subject: match ? match[:subject] : nil,
-          breaking: match ? match[:breaking] == '!' : false,
+          breaking: match ? match[:breaking] == '!' : false
         }
       end
 
@@ -67,42 +65,35 @@ module ConventionalGitflow
         initial_state = {
           continue_breaking_change: false
         }
-        binding.pry if @debug
-        contents, _ = lines.reduce([contents, initial_state]) { |input, line|
+        contents, = lines.reduce([contents, initial_state]) do |input, line|
           acc, state = input
-          binding.pry if @debug
           next process_line(line, acc, state)
-        }
+        end
 
         # contents[:breaking_change] ||= match_breaking_change_header(header)
 
-        binding.pry if @debug
         contents.transform_values { |v| trim_new_lines(v) }
       end
 
       def process_line(line, contents, state)
         contents[:breaking_change] ||= match_breaking_change_body(line)
-        binding.pry if @debug
 
         if contents[:breaking_change]
           contents[:breaking_change] = append(contents[:breaking_change], line) if state[:continue_breaking_change]
-          binding.pry if @debug
 
           state[:continue_breaking_change] = true
           contents[:footer] = append(contents[:footer], line)
           return [contents, state]
         end
 
-        binding.pry if @debug
         contents[:body] = append(contents[:body], line)
-        binding.pry if @debug
 
         [contents, state]
       end
 
       def match_breaking_change_body(line)
         match = line.match BREAKING_CHANGE_BODY_PATTERN
-        match[:contents] || "" if match
+        match[:contents] || '' if match
       end
 
       # def match_breaking_change_header(header)
@@ -116,23 +107,23 @@ module ConventionalGitflow
 
       def match_revert(raw_commit)
         match = raw_commit.match REVERT_PATTERN
-        if match
-          {
-            header: match[:header],
-            id: match[:id]
-          }
-        end
+        return unless match
+
+        {
+          header: match[:header],
+          id: match[:id]
+        }
       end
 
       def append(src, line)
         return line unless src
-        src + "\n" + line
+
+        "#{src}\n#{line}"
       end
 
       def trim_new_lines(raw)
-        raw&.gsub(/\A(?:\r\n|\n|\r)+|(?:\r\n|\n|\r)+\z/, "")
+        raw&.gsub(/\A(?:\r\n|\n|\r)+|(?:\r\n|\n|\r)+\z/, '')
       end
-
     end
   end
 end

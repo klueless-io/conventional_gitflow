@@ -6,7 +6,7 @@
 module ConventionalGitflow
   module Git
     class LastCommit
-      include KUtil::Data::InstanceVariablesToSymbolizedHash
+      include KUtil::Data::InstanceVariablesToH
 
       attr_accessor :branch
       attr_accessor :commit_message

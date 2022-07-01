@@ -38,7 +38,9 @@ module ConventionalGitflow
       # chore: Regular code maintenance.[ You can also use emojis to represent commit types]
 
       # or
-      # BREAKING CHANGE: a commit that has a footer BREAKING CHANGE:, or appends a ! after the type/scope, introduces a breaking API change (affects MAJOR!). A BREAKING CHANGE can be part of commits of any type.
+      # BREAKING CHANGE: a commit that has a footer BREAKING CHANGE:
+      # or appends a ! after the type/scope, introduces a breaking API change (affects MAJOR!).
+      # A BREAKING CHANGE can be part of commits of any type.
       attribute :type, Types::String.optional
       # A scope may be provided to a commit’s type, to provide additional contextual information and is contained within parenthesis, e.g., feat(parser): add ability to parse arrays
       # A scope MUST consist of a noun describing a section of the codebase surrounded by parenthesis, e.g., fix(parser):
